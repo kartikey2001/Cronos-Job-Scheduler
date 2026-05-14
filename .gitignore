@@ -1,0 +1,76 @@
+# ── Build output ──────────────────────────────────────────────────────────────
+target/
+build/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ── Compiled classes / packages ───────────────────────────────────────────────
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+!.mvn/wrapper/maven-wrapper.jar
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+logs/
+spring.log
+
+# ── Credentials and secrets (NEVER commit) ────────────────────────────────────
+.env
+*.p12
+*.jks
+*.keystore
+*.truststore
+
+# ── Local / overrides config ──────────────────────────────────────────────────
+application-local.properties
+application-local.yml
+application-local.yaml
+
+# ── Testcontainers ────────────────────────────────────────────────────────────
+.testcontainers.properties
+
+# ── IntelliJ IDEA ─────────────────────────────────────────────────────────────
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# ── Eclipse / STS ─────────────────────────────────────────────────────────────
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache
+
+# ── NetBeans ──────────────────────────────────────────────────────────────────
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# ── VS Code ───────────────────────────────────────────────────────────────────
+.vscode/
+
+# ── OS files ──────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Claude Code local config ──────────────────────────────────────────────────
+.claude/
+
+# ── Personal / private docs ───────────────────────────────────────────────────
+README_PERSONAL.md
+
+# ── Spring Boot Initializr default help file ──────────────────────────────────
+HELP.md
