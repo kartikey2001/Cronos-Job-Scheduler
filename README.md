@@ -173,7 +173,7 @@ mvn verify
 
 Tests require Docker for Testcontainers (spins up Postgres and Redis automatically).
 
-99 tests across unit (Mockito), integration (MockMvc + Testcontainers), webhook (WireMock), and email (GreenMail) layers.
+100 tests across unit (Mockito), integration (MockMvc + Testcontainers), webhook (WireMock), and email (GreenMail) layers.
 
 ---
 
