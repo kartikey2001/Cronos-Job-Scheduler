@@ -98,4 +98,8 @@ public class Job {
         this.status = JobStatus.PENDING;
         this.retryCount = 0;
     }
+
+    public void resetRetryCount() {
+        this.retryCount = 0;
+    }
 }

@@ -47,18 +47,22 @@ public class WebhookExecutionStore {
         return new ExecutionPrep(saved.getId(), job.getWebhookUrl(), job.getUserId(), job.getName());
     }
 
-    /** Marks job SUCCESS, completes the log, and sends the success email. */
+    /** Marks job SUCCESS (or resets to PENDING for cron), completes the log, and sends the success email. */
     public void finalizeSuccess(UUID jobId, UUID execLogId, String responseBody) {
         Job job = jobRepository.findById(jobId).orElseThrow();
-        job.updateStatus(JobStatus.SUCCESS);
+        boolean isCron = job.getCronExpression() != null && !job.getCronExpression().isBlank();
+        job.updateStatus(isCron ? JobStatus.PENDING : JobStatus.SUCCESS);
+        job.resetRetryCount();
         jobRepository.save(job);
 
         ExecutionLog log = executionLogRepository.findById(execLogId).orElseThrow();
         log.complete(ExecutionStatus.SUCCESS, responseBody, null);
         executionLogRepository.save(log);
 
-        userRepository.findById(job.getUserId()).ifPresent(user ->
-                notificationService.sendJobSuccess(user.getEmail(), job.getName()));
+        if (!isCron) {
+            userRepository.findById(job.getUserId()).ifPresent(user ->
+                    notificationService.sendJobSuccess(user.getEmail(), job.getName()));
+        }
     }
 
     /** Completes the log with FAILED and delegates to RetryService. */

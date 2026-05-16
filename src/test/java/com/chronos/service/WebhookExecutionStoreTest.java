@@ -109,6 +109,25 @@ class WebhookExecutionStoreTest {
         verify(notificationService).sendJobSuccess("alice@example.com", "My Job");
     }
 
+    @Test
+    void finalizeSuccess_cron_job_resets_to_pending_and_suppresses_email() {
+        Job job = new Job(USER_ID, "Cron Job", null, "https://example.com/hook", "0/10 * * * * ?", FUTURE, 3, 5000L);
+        ReflectionTestUtils.setField(job, "id", JOB_ID);
+        job.updateStatus(JobStatus.RUNNING);
+        when(jobRepository.findById(JOB_ID)).thenReturn(Optional.of(job));
+        when(jobRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        ExecutionLog log = savedLog();
+        when(executionLogRepository.findById(EXEC_LOG_ID)).thenReturn(Optional.of(log));
+        when(executionLogRepository.save(any())).thenAnswer(i -> i.getArgument(0));
+
+        store.finalizeSuccess(JOB_ID, EXEC_LOG_ID, "ok");
+
+        assertThat(job.getStatus()).isEqualTo(JobStatus.PENDING);
+        assertThat(job.getRetryCount()).isZero();
+        verifyNoInteractions(notificationService);
+    }
+
     // ── finalizeFailure ──────────────────────────────────────────────────────
 
     @Test
